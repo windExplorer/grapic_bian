@@ -1,0 +1,1 @@
+npm install request --save-dev && npm install cheerio --save-dev && npm install iconv-lite --save-dev && npm install bagpipe --save-dev
