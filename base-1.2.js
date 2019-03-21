@@ -23,6 +23,8 @@
  * 更新日志
  * 1.优化控制台输出
  * 2.修复bug若干
+ * 3.优化计数
+ * 4.添加一项配置，请求连接多加一种方式  /s/category/
  */
 
 const request = require('request')
@@ -35,10 +37,11 @@ const Bagpipe = require('bagpipe')
 //默认配置项
 let config = {
   domain: 'http://www.netbian.com/',  //主机域名，不修改
-  category: 'dongwu/',  //分类，可酌情修改
+  prefix_category: true, //前置分类,是否含有前置分类，对于计数有帮助
+  category: 's/guidao/',  //分类，可酌情修改  fengjing  dongman  dongwu  huahui  weimei  youxi  meinv  s/guidao (计数会有问题,请把prefix_category打开) 
   size: '1920x1080', //一般不可修改[修改也不起作用]
   hostdir: "./imgs/", //保存图片目录，一般不修改
-  startPage: 52,  //开始页面，一般不修改
+  startPage: 0,  //开始页面，一般不修改
   endPage: 0,  //结束页码，酌情修改，若为0则自动设置为总页码最后一页
   errTimeEnd: 10, //重试次数，酌情修改
   waitTime: 5000, //每页间隔时间(ms)
@@ -89,6 +92,17 @@ let flag = {
 
 let bagpipe = new Bagpipe(10)
 /* 一系列方法 */
+
+let Count = (len) => {
+  if(config.prefix_category){
+    flag.planLength += len
+  }else{
+    if(list.length > 3)
+      flag.planLength += (len - 1)
+    else
+      flag.planLength += len
+  }
+}
 
 let SimpleConsole = (info) => {
   if(config.showConsole)
@@ -235,10 +249,7 @@ const get_Data = (req_url, type = 0, page = 0, id = 0, errTime = 0) => {
               if($('div.list ul').length == 0)
                 return
               let list = $('div.list ul')[0].children
-              if(list.length > 3)
-                flag.planLength += (list.length - 1)
-              else
-                flag.planLength += list.length
+              Count(list.length)
               req_List($, list, page)
             } else {
               console.log('[信息](初始页面不为0) 将从指定页面开始')
@@ -249,10 +260,7 @@ const get_Data = (req_url, type = 0, page = 0, id = 0, errTime = 0) => {
             if($('div.list ul').length == 0)
               return
             let list = $('div.list ul')[0].children
-            if(list.length > 3)
-                flag.planLength += (list.length - 1)
-              else
-                flag.planLength += list.length
+            Count(list.length)
             req_List($, list, page)
             break
           case 2: 
