@@ -37,8 +37,8 @@ const Bagpipe = require('bagpipe')
 //默认配置项
 let config = {
   domain: 'http://www.netbian.com/',  //主机域名，不修改
-  prefix_category: true, //前置分类,是否含有前置分类，对于计数有帮助
-  category: 's/guidao/',  //分类，可酌情修改  fengjing  dongman  dongwu  huahui  weimei  youxi  meinv  s/guidao (计数会有问题,请把prefix_category打开) 
+  prefix_category: false, //前置分类,是否含有前置分类，对于计数有帮助
+  category: 'qiche/',  //分类，可酌情修改  fengjing  dongman  dongwu  huahui  weimei  youxi  meinv  s/guidao (计数会有问题,请把prefix_category打开) 
   size: '1920x1080', //一般不可修改[修改也不起作用]
   hostdir: "./imgs/", //保存图片目录，一般不修改
   startPage: 0,  //开始页面，一般不修改
@@ -97,7 +97,7 @@ let Count = (len) => {
   if(config.prefix_category){
     flag.planLength += len
   }else{
-    if(list.length > 3)
+    if(len > 3)
       flag.planLength += (len - 1)
     else
       flag.planLength += len
