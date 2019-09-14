@@ -10,7 +10,7 @@ const iconv = require('iconv-lite')
 const Bagpipe = require('bagpipe')
 let bagpipe = new Bagpipe(10)
 
-let cate = 'fengjing/'
+let cate = 'dongman/'
 let path = './imgs/' + cate
 let domain = 'http://www.netbian.com/'
 let standradSize = 100
